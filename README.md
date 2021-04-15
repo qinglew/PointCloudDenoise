@@ -1,6 +1,6 @@
 # Point Cloud Denoise
 
-Some general filtering algorithms of point cloud implement by [PCL](https://github.com/PointCloudLibrary/pcl). Simple interfaces are given.
+Some general filtering algorithms of point cloud implemented by [PCL](https://github.com/PointCloudLibrary/pcl). Simple interfaces are given.
 
 ## Filtering Algorithms
 
