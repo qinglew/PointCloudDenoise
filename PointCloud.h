@@ -26,20 +26,20 @@
  * Read .pcd file as point cloud.
  * @param filename path of .pcd path
  */
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr read_pcd(const char* filename);
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr read_pcd(const char* filename);
 
 /*
  * Read .ply file as point cloud.
  * @param filename: path of .pcd path
  */
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr read_ply(const char* filename);
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr read_ply(const char* filename);
 
 /*
  * Output the coordinate (x, y, z) and (r, g, b) of points in point cloud.
  * @param cloud: point cloud object
  * @param num_of_points: the number of points you want to output
  */
-void print_points(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, int num_of_points);
+void print_points(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, int num_of_points);
 
 /*
  * Visualize a point cloud without color information.
@@ -51,14 +51,14 @@ void visualize(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
  * @param cloud: point cloud
  * @param rgb: do not visualize the color in default
  */
-void visualize(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, bool rgb = false);
+void visualize(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, bool rgb = false);
 
 /*
  * Save point cloud object into file.
  * @param cloud: point cloud object
  * @param filename: the target path
  */
-void save(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, const char* filename);
+void save(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, const char* filename);
 
 /*
  * Pathrough filter.
@@ -67,7 +67,7 @@ void save(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, const char* filename);
  * @param min_value: the minimum distance to include
  * @param max_value: the maximum distance to include
  */
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr pathrough_filter(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud,
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr pathrough_filter(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud,
 	const char* field, float min_value, float max_value);
 
 /*
@@ -77,7 +77,7 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr pathrough_filter(pcl::PointCloud<pcl::Poi
  * @param ly: leafsize of y axis
  * @param lz: leafsize of z axis
  */
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr voxel_filter(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud,
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr voxel_filter(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud,
 	float lx, float ly, float lz);
 
 /*
@@ -86,7 +86,7 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr voxel_filter(pcl::PointCloud<pcl::PointXY
  * @param n: how many points to be calculate mean in a neighbor
  * @param stddev: standard deviation 
  */
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr statistical_filter(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, int n, double stddev);
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr statistical_filter(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, int n, double stddev);
 
 /*
  * Radius outliers removal. If the number of points in a neighbor is samller than min_pts, the point will be removed.
@@ -94,6 +94,6 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr statistical_filter(pcl::PointCloud<pcl::P
  * @param radius: the value of radius of a ball neighbor
  * @param min_pts: the minimum number of points in a ball neighbor
  */
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr radius_filter(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, double radius, int min_pts);
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr radius_filter(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, double radius, int min_pts);
 
 #endif // !__POINTCLOUD_h__

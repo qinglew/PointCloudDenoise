@@ -3,18 +3,18 @@
 #include "PointCloud.h"
 
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr read_pcd(const char* filename)
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr read_pcd(const char* filename)
 {
-	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
+	pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
 	pcl::PCDReader reader;
-	reader.read<pcl::PointXYZRGB>(filename, *cloud);
+	reader.read<pcl::PointXYZRGBNormal>(filename, *cloud);
 	return cloud;
 }
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr read_ply(const char* filename)
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr read_ply(const char* filename)
 {
-	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud = std::make_shared<pcl::PointCloud<pcl::PointXYZRGB>>();
-	if (pcl::io::loadPLYFile<pcl::PointXYZRGB>(filename, *cloud) == -1)
+	pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud = std::make_shared<pcl::PointCloud<pcl::PointXYZRGBNormal>>();
+	if (pcl::io::loadPLYFile<pcl::PointXYZRGBNormal>(filename, *cloud) == -1)
 	{
 		PCL_ERROR("Couldn't read file %s\n", filename);
 		cloud = nullptr;
@@ -23,7 +23,7 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr read_ply(const char* filename)
 	return cloud;
 }
 
-void print_points(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, int num_of_points)
+void print_points(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, int num_of_points)
 {
 	if (num_of_points > cloud->points.size())
 		num_of_points = cloud->points.size();
@@ -54,7 +54,7 @@ void visualize(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 	}
 }
 
-void visualize(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, bool rgb)
+void visualize(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, bool rgb)
 {
 	std::shared_ptr<pcl::visualization::PCLVisualizer> viewer = std::make_shared<pcl::visualization::PCLVisualizer>("Showing Point Cloud");
 	if (!rgb)
@@ -62,12 +62,12 @@ void visualize(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, bool rgb)
 		// set background color to black
 		viewer->setBackgroundColor(0, 0, 0);
 		// set point color to red
-		pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZRGB>target_color(cloud, 255, 0, 0);
-		viewer->addPointCloud<pcl::PointXYZRGB>(cloud, target_color, "Target Point Cloud");
+		pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZRGBNormal>target_color(cloud, 255, 0, 0);
+		viewer->addPointCloud<pcl::PointXYZRGBNormal>(cloud, target_color, "Target Point Cloud");
 	}
 	else
 	{
-		viewer->addPointCloud<pcl::PointXYZRGB>(cloud, "Target Point Cloud");
+		viewer->addPointCloud<pcl::PointXYZRGBNormal>(cloud, "Target Point Cloud");
 	}
 	
 	viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "Target Point Cloud");
@@ -79,16 +79,16 @@ void visualize(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, bool rgb)
 	}
 }
 
-void save(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, const char* filename, bool bin)
+void save(pcl::PointCloud<pcl::PointXYZRGBNormalNormal>::Ptr cloud, const char* filename, bool bin)
 {
 	pcl::PLYWriter writer;
 	writer.write(filename, *cloud, bin);
 }
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr pathrough_filter(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud,
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr pathrough_filter(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud,
 	const char* field, float min_value, float max_value)
 {
-	//pcl::PointXYZRGB min_pt, max_pt;
+	//pcl::PointXYZRGBNormal min_pt, max_pt;
 	//pcl::getMinMax3D(*cloud, min_pt, max_pt);
 	
 	if (!(strcmp(field, "x") == 0 || strcmp(field, "y") == 0 || strcmp(field, "z") == 0))
@@ -97,32 +97,32 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr pathrough_filter(pcl::PointCloud<pcl::Poi
 		exit(EXIT_FAILURE);
 	}
 
-	pcl::PassThrough<pcl::PointXYZRGB> pass;
+	pcl::PassThrough<pcl::PointXYZRGBNormal> pass;
 	pass.setFilterFieldName(field);
 	pass.setInputCloud(cloud);
 	pass.setFilterLimits(min_value, max_value);
 	pass.setFilterLimitsNegative(false);
 
-	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZRGB>);
+	pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
 	pass.filter(*cloud_filtered);
 	
 	return cloud_filtered;
 }
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr voxel_filter(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, float lx, float ly, float lz)
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr voxel_filter(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, float lx, float ly, float lz)
 {
-	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZRGB>);
-	pcl::VoxelGrid<pcl::PointXYZRGB> sor;
+	pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+	pcl::VoxelGrid<pcl::PointXYZRGBNormal> sor;
 	sor.setInputCloud(cloud);
 	sor.setLeafSize(lx, ly, lz);
 	sor.filter(*cloud_filtered);
 	return cloud_filtered;
 }
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr statistical_filter(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, int n, double stddev)
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr statistical_filter(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, int n, double stddev)
 {
-	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZRGB>);
-	pcl::StatisticalOutlierRemoval<pcl::PointXYZRGB> sor;
+	pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+	pcl::StatisticalOutlierRemoval<pcl::PointXYZRGBNormal> sor;
 	sor.setInputCloud(cloud);
 	sor.setMeanK(n);
 	sor.setStddevMulThresh(stddev);
@@ -130,10 +130,10 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr statistical_filter(pcl::PointCloud<pcl::P
 	return cloud_filtered;
 }
 
-pcl::PointCloud<pcl::PointXYZRGB>::Ptr radius_filter(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, double radius, int min_pts)
+pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr radius_filter(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, double radius, int min_pts)
 {
-	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZRGB>);
-	pcl::RadiusOutlierRemoval<pcl::PointXYZRGB> outrem;
+	pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZRGBNormal>);
+	pcl::RadiusOutlierRemoval<pcl::PointXYZRGBNormal> outrem;
 	outrem.setInputCloud(cloud);
 	outrem.setRadiusSearch(radius);
 	outrem.setMinNeighborsInRadius(min_pts);
