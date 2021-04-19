@@ -79,10 +79,10 @@ void visualize(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, bool rgb)
 	}
 }
 
-void save(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, const char* filename)
+void save(pcl::PointCloud<pcl::PointXYZRGBNormal>::Ptr cloud, const char* filename, bool bin)
 {
-	pcl::PCDWriter writer;
-	writer.write(filename, *cloud);
+	pcl::PLYWriter writer;
+	writer.write(filename, *cloud, bin);
 }
 
 pcl::PointCloud<pcl::PointXYZRGB>::Ptr pathrough_filter(pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud,
